@@ -21,7 +21,7 @@ if [ $USER != 'root' ]; then
 fi
 if [  -n "$(uname -a | grep -iE 'Ubuntu|Debian')" ]; then
     sudo apt update && sudo apt upgrade -y
-    sudo apt install nginx mysql-server
+    sudo apt install nginx mysql-server php7 php7-fpm php7-mysql -y
     sudo systemctl enable mysql.service
     sudo systemctl start mysql.service
     sudo mysql_secure_installation
