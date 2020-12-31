@@ -21,22 +21,23 @@ if [ $USER != 'root' ]; then
 fi
 if [  -n "$(uname -a | grep -iE 'Ubuntu|Debian')" ]; then
     sudo apt update && sudo apt upgrade -y
-    sudo apt install nginx mysql-server php7 php7-fpm php7-mysql -y
-    sudo systemctl enable mysql.service
-    sudo systemctl start mysql.service
+    sudo apt install apache2 mysql-server php libapache2-mod-php php-mysql php-cli -y
+    sudo ufw allow in "Apache Full"
     sudo mysql_secure_installation
-
 else
    sudo yum update -y	
    sudo yum install epel-release -y
-   sudo yum install nginx -y
-   sudo systemctl enable nginx	
-   sudo systemctl start nginx
+   sudo yum install httpd
+   sudo firewall-cmd --permanent --add-service=http
+   sudo firewall-cmd --permanent --add-service=https
+   sudo firewall-cmd --reload
+   sudo systemctl enable httpd
+   sudo systemctl start httpd
    sudo yum install yum-utils -y
    sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y
    sudo yum-config-manager --enable remi-php74
    sudo yum install php74-php php74-php-fpm php74-php-gd php74-php-json php74-php-mbstring php74-php-mysqlnd php74-php-xml php74-php-xmlrpc php74-php-opcache -y
-   sudo systemctl enable php74-php-fpm	
+   sudo systemctl enable php74-php-fpm
    sudo systemctl start php74-php-fpm
    sudo wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
    sudo rpm -Uvh mysql80-community-release-el7-3.noarch.rpm

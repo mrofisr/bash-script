@@ -30,4 +30,3 @@ pkg install mysql80-server
 sysrc mysql_enable=yes
 service mysql-server start
 mysql_secure_installation
-
